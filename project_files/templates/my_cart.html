@@ -1,0 +1,61 @@
+{% extends "template.html" %}
+
+{% block title%}My Cart{% endblock %}
+
+{% block content %}
+{% if not cart %}
+
+<span style="color:grey;" class="text-center mt-5">No items in cart</span>
+{% else %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 col-md-9">
+            {% for product in cart %}
+            <div class="row mb-3">
+                <div class="col-12 col-md-3 mx-5">
+                    <img src="{{product.image_path}}" class="img-fluid" alt="Product Image">
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <span>{{product.name}}</span><br>
+                            <span>{{product.price}}</span><br>
+                            <span>Quantity: {{product.quantity}}</span>
+                        </div>
+
+                        <div class="col-12">
+                            <form action="/remove_from_cart" method="post">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Total: {{total}}$ </h3>
+
+                   
+                    <form id="checkout-form" action="/process_payment" method="post">
+                        <button id="buy-now-btn" type="submit" class="btn btn-primary" style="background-color:rgb(35,33,96)">Buy
+                            Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+
+
+{% endblock %}

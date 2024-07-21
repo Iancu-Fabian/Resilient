@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Titlu {% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+        {% block head %}
+        {% endblock %}
+            <style>
+                @font-face {
+                    font-family: 'Helvetica';
+                    src: url('static/Helvetica.ttf') format('truetype');
+                            }
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                    font-family: Helvetica;
+    
+                }
+            
+                footer {
+                    margin-top: auto;
+                }
+                p{
+        
+                    margin:0;
+                }
+
+                a{
+                    text-decoration:none;
+                }
+            </style>
+    
+    {%block style %}
+    {% endblock %}
+</head>
+
+<body>
+<div class="container-fluid" style="background-color:rgb(35, 33, 96); color:white;">
+<div class="row">
+    <div class="col md-4">
+<ul class="navbar-nav">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/"><h1 style="font-size:26px; margin-left:20px;">Resilient</h1></a>
+    </li>
+    </ul>
+</div>
+
+
+<div class="col-md-4 offset-md-4 d-flex justify-content-end align-items-center">
+    <div class="nav-item">
+        <a class="nav-link active" href="/my_cart" style="display:flex; align-items:center; margin-right:30px;">
+            <img src="/static/cart4.svg" alt="da" width="18px" height="18px" style="margin-top:7px;">
+            <h1 style="margin-top:19px; font-size:17px; margin-left:10px;">My cart</h1>
+        </a> 
+    </div>
+    <div class="nav-item">
+        {% if user.is_authenticated %}
+        <a class="nav-link active" href="#" style="display:flex; align-items:center;">
+            <img src="/static/person-fill.png" alt="da" width="18px" height="18px" style="margin-top:7px;">
+           
+            <h1 style="margin-top:19px; font-size:17px; margin-left:10px;">{{user.first_name}}</h1>
+            {% else %}
+            <a class="nav-link active" href="/sign_up" style="display:flex; align-items:center;">
+                <img src="/static/person-fill.png" alt="da" width="18px" height="18px" style="margin-top:7px;">
+            <h1 style="margin-top:19px; font-size:17px; margin-left:10px;">My account</h1>
+            {% endif %}
+        </a>
+    </div>
+</div>
+
+</div>
+</div>
+
+<div class="container-fluid"style="background-color:white;" >
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding:0px;">
+    <div class="container-fluid" style="background-color:white;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" style="background-color:white; color:black; border-color:white;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Shop
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#products">Equipment</a></li>
+                            <li><a class="dropdown-item" href="#products">Clothing</a></li>
+                            <li><a class="dropdown-item" href="#products">Supplements</a></li>
+                        
+                        </ul>
+                    </div>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="color:black;">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact" style="color:black;">Contact</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/sign_up" style="color:black;">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login"style="color:black;">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"style="color:black;">Contact</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+</div>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+{% for category, message in messages %}
+{% if category =='error' %}
+<div class="alert alert-danger alert-dismissable fade show d-flex justify-content-between" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% else %}
+<div class="alert alert-success alert-dismissable fade show d-flex justify-content-between" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% endwith %}
+
+
+{% block content %}
+{% endblock %}
+
+<footer class="footer text-white text-left" style="background-color:rgb(35, 33, 96);" id="contact">
+    <div class="container" style="z-index: 100;">
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <h5 class="my-2 pb-3 fw-bold text-secundar">About the store</h5>
+                <a href="#"
+                    class="d-block my-2 text-white link-effect">Personal data protection</a>
+                <a href="#" class="d-block my-2 text-white link-effect">Terms and conditions</a>
+                <a href="#" class="d-block my-2 text-white link-effect">About us</a>
+
+            </div>
+            <div class="col-md-4">
+                <h5 class="my-2 pb-3 fw-bold text-secundar">Useful information</h5>
+                <a href="#" class="d-block my-2 text-white link-effect">How to order online</a>
+                <a href="#" class="d-block my-2 text-white link-effect">How to pay</a>
+                <a href="#" class="d-block my-2 text-white link-effect">Delivery details</a>
+
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="my-2 pb-3 fw-bold">Contact Details</h5>
+                <a class="my-2 text-white d-block fs-5" href="#">0761234567</a>
+                <a class="my-2 text-white d-block" href="mailto:contact@shop.ro"><u>contact@resilient.ro</u></a>
+                <a class="my-2 text-white">Str. Victoriei 10, Sect. 6, București</a>
+                <div class="mt-3">
+                    <a href="https://www.facebook.com/" target="_blank" class="btn btn-social-icon btn-facebook text-white"><i
+                            class="fab fa-facebook-f fa-xl"></i></a>
+                    <a href="https://www.twitter.com/" target="_blank" class="btn btn-social-icon btn-twitter text-white"><i
+                            class="fab fa-twitter fa-xl"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" class="btn btn-social-icon btn-instagram text-white"><i
+                            class="fa-brands fa-instagram fa-xl"></i></a>
+                </div>
+            </div>
+            <div class="col-md-12 text-md-left text-center mb-2">
+                <hr>
+                <p class="text-white mb-0" style="font-size: 0.775rem;">Copyright &copy; 2024 Resilient
+                   </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+
